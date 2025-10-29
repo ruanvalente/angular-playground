@@ -1,0 +1,22 @@
+<div>
+  <app-header></app-header>
+
+  <h1 class="title">Explore seus repositórios no Github</h1>
+
+  <form class="form" (ngSubmit)="searchRepository()">
+    <input
+      [(ngModel)]="search"
+      type="text"
+      name="search"
+      id="search"
+      placeholder="Entre com usuário/repositório"
+    />
+    <button type="submit" [disabled]="search().length === 0">Pesquisar</button>
+  </form>
+
+  @if (loading()) {
+  <app-loading></app-loading>
+  }
+
+  <span class="error" *ngIf="hasError()">Favor entrar com repositório correto</span>
+</div>

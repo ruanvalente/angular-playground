@@ -1,0 +1,23 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #a8a8b3;
+  transition: color 0.2s;
+}
+
+.header p {
+  margin-top: 0;
+  margin-left: 10px;
+}
+
+.header a:hover {
+  color: #a9a9b1;
+}
