@@ -1,0 +1,86 @@
+.issue-details {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.back-button {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: #0366d6;
+  cursor: pointer;
+}
+
+.back-button:hover {
+  text-decoration: underline;
+}
+
+.issue-header {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #e1e4e8;
+  padding-bottom: 1rem;
+}
+
+.issue-number {
+  color: #586069;
+  margin-right: 0.5rem;
+}
+
+.issue-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: #586069;
+  font-size: 0.875rem;
+  margin-top: 1rem;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.state {
+  padding: 0.25rem 0.75rem;
+  border-radius: 2em;
+  font-weight: 500;
+}
+
+.state.open {
+  background-color: #28a745;
+  color: white;
+}
+
+.state.closed {
+  background-color: #d73a49;
+  color: white;
+}
+
+.issue-body {
+  background: white;
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px solid #e1e4e8;
+  margin: 1rem 0;
+  white-space: pre-wrap;
+}
+
+.issue-actions {
+  margin-top: 2rem;
+  text-align: right;
+}
+
+.github-link {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: #222;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+.github-link:hover {
+  transition: all 0.3s ease;
+  background-color: #484848;
+}

@@ -1,0 +1,27 @@
+<div class="issue-details">
+  @if (loading()) {
+  <app-loading></app-loading>
+  } @else if (issue()) {
+  <header class="issue-header">
+    <a (click)="goBack()" class="back-button">&larr; Back to issues</a>
+    <h1>
+      <span class="issue-number">#{{ issue()?.number }}</span>
+      {{ issue()?.title }}
+    </h1>
+    <div class="issue-meta">
+      <img [src]="issue()?.user?.avatar_url" alt="User avatar" class="avatar" />
+      <span>Opened by {{ issue()?.user?.login }}</span>
+      <span>on {{ issue()?.created_at | date }}</span>
+      <span class="state {{ issue()?.state }}">{{ issue()?.state }}</span>
+    </div>
+  </header>
+
+  <div class="issue-body">
+    {{ issue()?.body }}
+  </div>
+
+  <div class="issue-actions">
+    <a [href]="issue()?.html_url" target="_blank" class="github-link"> View on GitHub </a>
+  </div>
+  }
+</div>
