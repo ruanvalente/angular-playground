@@ -1,0 +1,42 @@
+<div class="repository-details">
+  <a (click)="goBackToHome()" class="back-button">&larr; Back to repositories</a>
+  @if (loading()) {
+  <app-loading></app-loading>
+  } @else {
+  <header class="repository-header">
+    <h1>{{ repository()?.name }}</h1>
+    <div class="repository-stats">
+      <span class="stat">
+        <i class="fas fa-star"></i>
+        {{ repository()?.stars_count || 0 }} stars
+      </span>
+      <span class="stat">
+        <i class="fas fa-exclamation-circle"></i>
+        {{ repository()?.open_issues_count || 0 }} open issues
+      </span>
+    </div>
+  </header>
+
+  <section class="issues-section">
+    <h2>Issues</h2>
+
+    <div class="issues-list">
+      @for (issue of issues(); track issue.id) {
+      <div class="issue-card" (click)="navigateToIssue(issue)">
+        <span class="issue-number">#{{ issue.number }}</span>
+        <h3 class="issue-title">{{ issue.title }}</h3>
+        <p class="issue-info">Opened by {{ issue.user.login }} on {{ issue.created_at | date }}</p>
+      </div>
+      } @empty {
+      <p>No issues found</p>
+      }
+    </div>
+
+    <div class="pagination">
+      <button [disabled]="currentPage() === 1" (click)="previousPage()">Previous</button>
+      <span>Page {{ currentPage() }}</span>
+      <button [disabled]="!hasNextPage()" (click)="nextPage()">Next</button>
+    </div>
+  </section>
+  }
+</div>

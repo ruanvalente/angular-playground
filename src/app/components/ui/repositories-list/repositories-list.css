@@ -1,0 +1,68 @@
+.repositories-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.repository-card {
+  background: #fff;
+  border: 1px solid #e1e4e8;
+  border-radius: 6px;
+  padding: 1rem;
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.repository-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.repository-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #0366d6;
+  margin: 0 0 0.5rem;
+}
+
+.repository-description {
+  color: #586069;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.repository-stats {
+  display: flex;
+  gap: 1rem;
+  color: #586069;
+  font-size: 0.875rem;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: #586069;
+}
+
+/* Animation for cards entering */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.repository-card {
+  animation: fadeIn 0.3s ease-out forwards;
+}

@@ -1,0 +1,102 @@
+.repository-details {
+  padding: 2rem;
+}
+
+.repository-header {
+  margin-bottom: 2rem;
+}
+
+.repository-header h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.repository-stats {
+  display: flex;
+  gap: 1rem;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.issues-section {
+  margin-top: 2rem;
+}
+
+.issues-list {
+  display: grid;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.issue-card {
+  background-color: #f6f8fa;
+  padding: 1rem;
+  border: 1px solid #e1e4e8;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.issues-list:hover .issue-card {
+  opacity: 0.6;
+  transform: scale(0.98);
+}
+
+.issue-card:hover {
+  background-color: #f0f0f0;
+  opacity: 1 !important;
+  transform: scale(1.02) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #0366d6;
+  transition: all 0.3s ease;
+}
+
+.issue-number {
+  color: #586069;
+}
+
+.issue-title {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+.issue-info {
+  color: #586069;
+  font-size: 0.875rem;
+}
+
+.pagination {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.pagination button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #e1e4e8;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.back-button {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: #0366d6;
+  cursor: pointer;
+}
+
+.back-button:hover {
+  text-decoration: underline;
+}
