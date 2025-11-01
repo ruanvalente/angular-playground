@@ -5,7 +5,8 @@
 
   <form class="form" (ngSubmit)="searchRepository()">
     <input
-      [(ngModel)]="search"
+      [value]="search()"
+      (input)="search.set($event.target.value)"
       type="text"
       name="search"
       id="search"
@@ -19,4 +20,6 @@
   }
 
   <span class="error" *ngIf="hasError()">Favor entrar com repositório correto</span>
+
+  <app-repositories-list></app-repositories-list>
 </div>

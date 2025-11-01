@@ -1,120 +1,80 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject, model, signal } from '@angular/core';
+import { Component, effect, inject, model, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, Subject, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
 
+import { Repository, SearchService } from '../../../services/search.service';
 import { Header } from '../../shared/header/header';
 import { Loading } from '../../shared/loading/loading';
-
-interface Repository {
-  id?: number;
-  name?: string;
-  full_name?: string;
-  [key: string]: any;
-}
+import { RepositoriesList } from '../repositories-list/repositories-list';
 
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [CommonModule, FormsModule, Header, Loading],
+  imports: [CommonModule, FormsModule, Header, Loading, RepositoriesList],
   templateUrl: './search.html',
   styleUrl: './search.css',
 })
-export class Search implements OnInit {
-  search = model<string>('');
-
-  loading = signal(false);
-  hasError = signal(false);
-  hasRouterRepository = signal(false);
-  repositories = signal<Repository[]>([]);
-
-  private readonly STORAGE_KEY = '@GithubExploreAngular';
-  private repositoryChangeSubject = new Subject<Repository[]>();
-
+export class Search {
+  private searchService = inject(SearchService);
   private activatedRoute = inject(ActivatedRoute);
 
-  ngOnInit(): void {
-    this.loading.set(true);
+  readonly repositories = this.searchService.repositories;
+  readonly search = model<string>('');
+  readonly loading = signal(false);
+  readonly hasError = signal(false);
+  readonly hasRouterRepository = signal(false);
+  private searchTerm = signal('');
 
-    if (!this.activatedRoute.snapshot.paramMap.get('/')) {
-      this.hasRouterRepository.set(true);
-    }
+  constructor() {
+    effect(() => {
+      if (!this.activatedRoute.snapshot.paramMap.get('/')) {
+        this.hasRouterRepository.set(true);
+      }
+    });
 
-    setTimeout(() => {
-      const stored = this.getData(this.STORAGE_KEY);
-      this.repositories.set(stored || []);
-      this.loading.set(false);
-    }, 2000);
+    effect(() => {
+      const term = this.searchTerm();
+      if (!term) return;
 
-    this.repositoryChangeSubject.subscribe({
-      next: (changeRepositoryValue) => this.repositories.set(changeRepositoryValue),
-      error: (err) => console.error(err),
+      this.loading.set(true);
+      this.hasError.set(false);
+
+      this.searchService.searchRepository(term).subscribe({
+        next: (repository: Repository | null) => {
+          if (!repository) {
+            this.showError('Repositório não encontrado');
+            this.search.set('');
+            this.hasError.set(true);
+            return;
+          }
+
+          this.searchService.addRepository(repository);
+          this.showSuccess('Repositório adicionado com sucesso');
+          this.search.set('');
+        },
+        error: (error: any) => {
+          this.showError('Repositório não encontrado');
+          this.search.set('');
+          this.hasError.set(true);
+          console.error(error?.message || error);
+        },
+        complete: () => {
+          this.loading.set(false);
+          this.searchTerm.set('');
+        },
+      });
     });
   }
 
   searchRepository(): void {
     const term = this.search();
-    if (!term || term.trim().length === 0) return;
-
-    this.mockSearchRepository(term).subscribe({
-      next: (repository: Repository | null) => {
-        if (!repository) {
-          this.showError('Repositório não encontrado');
-          this.search.set('');
-          this.hasError.set(true);
-          return;
-        }
-
-        this.showSuccess('Repositório adicionado com sucesso');
-        const nextList = [...this.repositories(), repository];
-        this.saveData(this.STORAGE_KEY, nextList);
-
-        this.repositoryChangeSubject.next(nextList);
-        this.search.set('');
-        this.hasError.set(false);
-      },
-      error: (error: any) => {
-        this.showError('Repositório não encontrado');
-        this.search.set('');
-        this.hasError.set(true);
-        console.error(error?.message || error);
-      },
-      complete: () => {},
-    });
+    if (!term?.trim()) return;
+    this.searchTerm.set(term.trim());
   }
 
-  private mockSearchRepository(term: string): Observable<Repository | null> {
-    if (term.toLowerCase().includes('notfound')) {
-      return of(null).pipe(delay(700));
-    }
-
-    const repository: Repository = {
-      id: Date.now(),
-      name: term,
-      full_name: term,
-    };
-
-    return of(repository).pipe(delay(700));
-  }
-
-  private getData(key: string): Repository[] | null {
-    try {
-      const raw = localStorage.getItem(key);
-      return raw ? (JSON.parse(raw) as Repository[]) : null;
-    } catch (e) {
-      console.error('Failed to parse stored data', e);
-      return null;
-    }
-  }
-
-  private saveData(key: string, data: Repository[]) {
-    try {
-      localStorage.setItem(key, JSON.stringify(data));
-    } catch (e) {
-      console.error('Failed to save data', e);
-    }
+  removeRepository(id: string): void {
+    this.searchService.removeRepository(id);
   }
 
   private showSuccess(message: string) {
