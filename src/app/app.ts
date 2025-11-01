@@ -4,7 +4,7 @@ import { Search } from './components/ui/search/search';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Search],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
