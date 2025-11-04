@@ -1,17 +1,22 @@
 import { Injectable, PLATFORM_ID, effect, inject, signal } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { Observable, map, catchError, of } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { ToastService } from './toast.service';
 
 export interface Repository {
   id: string;
   name: string;
   full_name: string;
   description?: string;
-  url?: string;
-  stars_count?: number;
-  open_issues_count?: number;
-  html_url?: string;
+  html_url: string;
+  stargazers_count: number;
+  open_issues_count: number;
+  owner: {
+    login: string;
+    avatar_url: string;
+  };
 }
 
 @Injectable({
@@ -23,6 +28,10 @@ export class SearchService {
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   readonly repositories = this._repositories.asReadonly();
+
+  private readonly baseUrl = environment.github.baseUrl;
+  private readonly http = inject(HttpClient);
+  private readonly toastService = inject(ToastService);
 
   constructor() {
     if (this.isBrowser) {
@@ -43,14 +52,33 @@ export class SearchService {
       return of(null);
     }
 
-    return this.mockSearchRepository(trimmedTerm);
+    const [owner, repo] = trimmedTerm.split('/');
+    if (!owner || !repo) {
+      return of(null);
+    }
+
+    return this.http.get<Repository>(`${this.baseUrl}/repos/${owner}/${repo}`).pipe(
+      map((response) => ({
+        ...response,
+        id: response.id.toString(),
+      })),
+      catchError((error) => {
+        this.toastService.show(
+          `Repositório "${owner}/${repo}" não encontrado. Verifique se o nome está correto.`,
+          'error'
+        );
+        return of(null);
+      })
+    );
   }
 
   addRepository(repository: Repository): void {
     this._repositories.update((repos) => {
       if (repos.some((r) => r.id === repository.id)) {
+        this.toastService.show('Repositório já foi adicionado anteriormente', 'error');
         return repos;
       }
+      this.toastService.show('Repositório adicionado com sucesso!', 'success');
       return [repository, ...repos];
     });
   }
@@ -59,22 +87,6 @@ export class SearchService {
     if (!id) return;
 
     this._repositories.update((repos) => repos.filter((repo) => repo.id !== id));
-  }
-
-  private mockSearchRepository(term: string): Observable<Repository | null> {
-    if (term.toLowerCase().includes('notfound')) {
-      return of(null).pipe(delay(700));
-    }
-
-    const repository: Repository = {
-      id: crypto.randomUUID(),
-      name: term,
-      full_name: `${term}/${term}`,
-      description: `Mock repository for ${term}`,
-      url: `https://github.com/${term}/${term}`,
-    };
-
-    return of(repository).pipe(delay(700));
   }
 
   private _load(): void {
