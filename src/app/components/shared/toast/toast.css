@@ -32,6 +32,12 @@
   color: #cf222e;
 }
 
+.toast.warning {
+  background-color: #fff4e5;
+  border-left: 4px solid #ffa726;
+  color: #663c00;
+}
+
 .toast-content {
   flex: 1;
   display: flex;

@@ -1,9 +1,15 @@
 import { Injectable, signal } from '@angular/core';
 
+export enum ToastType {
+  SUCCESS = 'success',
+  ERROR = 'error',
+  WARNING = 'warning',
+}
+
 export interface Toast {
   id: string;
   message: string;
-  type: 'success' | 'error';
+  type: ToastType;
   isExiting?: boolean;
 }
 
@@ -14,7 +20,7 @@ export class ToastService {
   private readonly _toasts = signal<Toast[]>([]);
   readonly toasts = this._toasts.asReadonly();
 
-  show(message: string, type: 'success' | 'error'): void {
+  show(message: string, type: ToastType): void {
     const id = crypto.randomUUID();
     const toast: Toast = { id, message, type };
 

@@ -5,6 +5,7 @@
     class="toast"
     [class.success]="toast.type === 'success'"
     [class.error]="toast.type === 'error'"
+    [class.warning]="toast.type === 'warning'"
     [class.exit]="toast.isExiting"
   >
     <div class="toast-content">
@@ -31,6 +32,19 @@
       >
         <path
           d="M8 16A8 8 0 1 1 8 0a8 8 0 0 1 0 16zM5.78 4.72a.75.75 0 0 0-1.06 1.06L6.94 8l-2.22 2.22a.75.75 0 1 0 1.06 1.06L8 9.06l2.22 2.22a.75.75 0 1 0 1.06-1.06L9.06 8l2.22-2.22a.75.75 0 0 0-1.06-1.06L8 6.94 5.78 4.72z"
+          fill="currentColor"
+        />
+      </svg>
+      } @if (toast.type === 'warning') {
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M7.001 1.533a1 1 0 0 1 1.998 0l6.518 11.736A1 1 0 0 1 14.518 15H1.482a1 1 0 0 1-.999-1.731L7.001 1.533zM8 6.5a.75.75 0 0 0-.75.75v2.5a.75.75 0 0 0 1.5 0V7.25A.75.75 0 0 0 8 6.5zm0 6a.875.875 0 1 0 0-1.75.875.875 0 0 0 0 1.75z"
           fill="currentColor"
         />
       </svg>
