@@ -3,7 +3,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map, catchError, of } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { ToastService } from './toast.service';
+import { ToastService, ToastType } from './toast.service';
 
 export interface Repository {
   id: string;
@@ -65,7 +65,7 @@ export class SearchService {
       catchError((error) => {
         this.toastService.show(
           `Repositório "${owner}/${repo}" não encontrado. Verifique se o nome está correto.`,
-          'error'
+          ToastType.ERROR
         );
         return of(null);
       })
@@ -75,10 +75,10 @@ export class SearchService {
   addRepository(repository: Repository): void {
     this._repositories.update((repos) => {
       if (repos.some((r) => r.id === repository.id)) {
-        this.toastService.show('Repositório já foi adicionado anteriormente', 'error');
+        this.toastService.show('Repositório já foi adicionado anteriormente', ToastType.WARNING);
         return repos;
       }
-      this.toastService.show('Repositório adicionado com sucesso!', 'success');
+      this.toastService.show('Repositório adicionado com sucesso!', ToastType.SUCCESS);
       return [repository, ...repos];
     });
   }
