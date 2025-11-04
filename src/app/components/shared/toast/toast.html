@@ -1,0 +1,57 @@
+@if (toasts().length) {
+<div class="toast-container">
+  @for (toast of toasts(); track toast.id) {
+  <div
+    class="toast"
+    [class.success]="toast.type === 'success'"
+    [class.error]="toast.type === 'error'"
+    [class.exit]="toast.isExiting"
+  >
+    <div class="toast-content">
+      @if (toast.type === 'success') {
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M8 16A8 8 0 1 1 8 0a8 8 0 0 1 0 16zm3.78-9.72a.75.75 0 0 0-1.06-1.06L6.75 9.19 5.28 7.72a.75.75 0 0 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4.5-4.5z"
+          fill="currentColor"
+        />
+      </svg>
+      } @if (toast.type === 'error') {
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M8 16A8 8 0 1 1 8 0a8 8 0 0 1 0 16zM5.78 4.72a.75.75 0 0 0-1.06 1.06L6.94 8l-2.22 2.22a.75.75 0 1 0 1.06 1.06L8 9.06l2.22 2.22a.75.75 0 1 0 1.06-1.06L9.06 8l2.22-2.22a.75.75 0 0 0-1.06-1.06L8 6.94 5.78 4.72z"
+          fill="currentColor"
+        />
+      </svg>
+      }
+      <span>{{ toast.message }}</span>
+    </div>
+    <button class="toast-close" (click)="remove(toast)">
+      <svg
+        width="12"
+        height="12"
+        viewBox="0 0 12 12"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M6 4.94L10.94 0 12 1.06 7.06 6 12 10.94 10.94 12 6 7.06 1.06 12 0 10.94 4.94 6 0 1.06 1.06 0 6 4.94z"
+          fill="currentColor"
+        />
+      </svg>
+    </button>
+  </div>
+  }
+</div>
+}
