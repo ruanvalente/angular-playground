@@ -29,8 +29,17 @@
   border-color: #c53030;
 }
 
-.form input:hover {
-  transform: scale(1.1);
+.helper {
+  color: #c53030;
+  margin-top: 8px;
+  display: block;
+  font-size: 0.95rem;
+}
+
+.form input:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(3, 102, 214, 0.08);
+  border-color: #0366d6;
 }
 
 button {

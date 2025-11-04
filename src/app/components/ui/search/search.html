@@ -3,23 +3,33 @@
 
   <h1 class="title">Explore seus repositórios no Github</h1>
 
-  <form class="form" (ngSubmit)="searchRepository()">
+  <form class="form" (ngSubmit)="searchRepository()" novalidate>
     <input
-      [value]="search()"
-      (input)="search.set($event.target.value)"
+      [formControl]="searchControl"
       type="text"
       name="search"
       id="search"
-      placeholder="Entre com usuário/repositório"
+      placeholder="Entre com usuário/repositório (ex: angular/angular)"
+      [class.error-input]="searchControl.touched && searchControl.invalid"
+      aria-invalid="{{ searchControl.touched && searchControl.invalid ? 'true' : 'false' }}"
+      aria-describedby="search-help"
     />
-    <button type="submit" [disabled]="search().length === 0">Pesquisar</button>
+    <button type="submit" [disabled]="searchControl.invalid">Pesquisar</button>
   </form>
 
-  @if (loading()) {
+  @if (searchControl.touched && searchControl.hasError('required')) {
+  <span id="search-help-empty" class="helper"
+    >Por favor, entre com usuário/repositório (ex: angular/angular).</span
+  >
+  } @if (searchControl.touched && searchControl.hasError('pattern')) {
+  <span id="search-help-format" class="helper"
+    >Formato inválido. Use <code>usuario/repositorio</code> (ex: angular/angular).</span
+  >
+  } @if (loading()) {
   <app-loading></app-loading>
+  } @if(hasError()) {
+  <span class="error">Favor entrar com repositório correto</span>
   }
-
-  <span class="error" *ngIf="hasError()">Favor entrar com repositório correto</span>
 
   <app-repositories-list></app-repositories-list>
 </div>

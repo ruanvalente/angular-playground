@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, inject, model, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, effect, inject, signal } from '@angular/core';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 import { Repository, SearchService } from '../../../services/search.service';
@@ -11,7 +11,7 @@ import { RepositoriesList } from '../repositories-list/repositories-list';
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [CommonModule, FormsModule, Header, Loading, RepositoriesList],
+  imports: [CommonModule, ReactiveFormsModule, Header, Loading, RepositoriesList],
   templateUrl: './search.html',
   styleUrl: './search.css',
 })
@@ -20,7 +20,10 @@ export class Search {
   private activatedRoute = inject(ActivatedRoute);
 
   readonly repositories = this.searchService.repositories;
-  readonly search = model<string>('');
+  readonly searchControl = new FormControl<string>('', {
+    nonNullable: true,
+    validators: [Validators.required, Validators.pattern(/^[^\/\s]+\/[^\/\s]+$/)],
+  });
   readonly loading = signal(false);
   readonly hasError = signal(false);
   readonly hasRouterRepository = signal(false);
@@ -44,18 +47,18 @@ export class Search {
         next: (repository: Repository | null) => {
           if (!repository) {
             this.showError('Repositório não encontrado');
-            this.search.set('');
+            this.searchControl.setValue('');
             this.hasError.set(true);
             return;
           }
 
           this.searchService.addRepository(repository);
           this.showSuccess('Repositório adicionado com sucesso');
-          this.search.set('');
+          this.searchControl.setValue('');
         },
         error: (error: any) => {
           this.showError('Repositório não encontrado');
-          this.search.set('');
+          this.searchControl.setValue('');
           this.hasError.set(true);
           console.error(error?.message || error);
         },
@@ -68,9 +71,13 @@ export class Search {
   }
 
   searchRepository(): void {
-    const term = this.search();
-    if (!term?.trim()) return;
-    this.searchTerm.set(term.trim());
+    const term = this.searchControl.value?.trim();
+    if (!term) {
+      this.searchControl.markAsTouched();
+      return;
+    }
+
+    this.searchTerm.set(term);
   }
 
   removeRepository(id: string): void {
