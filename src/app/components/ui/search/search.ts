@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, inject, signal } from '@angular/core';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { finalize } from 'rxjs/operators';
 
 import { Repository, SearchService } from '../../../services/search.service';
 import { Header } from '../../shared/header/header';
@@ -16,58 +18,29 @@ import { RepositoriesList } from '../repositories-list/repositories-list';
   styleUrl: './search.css',
 })
 export class Search {
-  private searchService = inject(SearchService);
-  private activatedRoute = inject(ActivatedRoute);
+  private readonly searchService = inject(SearchService);
+  private readonly route = inject(ActivatedRoute);
 
-  readonly repositories = this.searchService.repositories;
+  readonly loading = signal(false);
+  readonly hasError = signal(false);
+
   readonly searchControl = new FormControl<string>('', {
     nonNullable: true,
     validators: [Validators.required, Validators.pattern(/^[^\/\s]+\/[^\/\s]+$/)],
   });
-  readonly loading = signal(false);
-  readonly hasError = signal(false);
-  readonly hasRouterRepository = signal(false);
-  private searchTerm = signal('');
+
+  readonly searchForm = new FormGroup({
+    search: this.searchControl,
+  });
+
+  readonly repositories = this.searchService.repositories;
 
   constructor() {
-    effect(() => {
-      if (!this.activatedRoute.snapshot.paramMap.get('/')) {
-        this.hasRouterRepository.set(true);
-      }
-    });
-
-    effect(() => {
-      const term = this.searchTerm();
-      if (!term) return;
-
-      this.loading.set(true);
-      this.hasError.set(false);
-
-      this.searchService.searchRepository(term).subscribe({
-        next: (repository: Repository | null) => {
-          if (!repository) {
-            this.showError('Repositório não encontrado');
-            this.searchControl.setValue('');
-            this.hasError.set(true);
-            return;
-          }
-
-          this.searchService.addRepository(repository);
-          this.showSuccess('Repositório adicionado com sucesso');
-          this.searchControl.setValue('');
-        },
-        error: (error: any) => {
-          this.showError('Repositório não encontrado');
-          this.searchControl.setValue('');
-          this.hasError.set(true);
-          console.error(error?.message || error);
-        },
-        complete: () => {
-          this.loading.set(false);
-          this.searchTerm.set('');
-        },
-      });
-    });
+    const repoParam = this.route.snapshot.queryParamMap.get('repo');
+    if (repoParam) {
+      this.searchControl.setValue(repoParam);
+      this.searchRepository();
+    }
   }
 
   searchRepository(): void {
@@ -77,11 +50,34 @@ export class Search {
       return;
     }
 
-    this.searchTerm.set(term);
+    this.loading.set(true);
+    this.hasError.set(false);
+
+    this.searchService
+      .searchRepository(term)
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe({
+        next: (repository: Repository | null) => {
+          if (!repository) {
+            this.showError('Repositório não encontrado');
+            return;
+          }
+          this.searchService.addRepository(repository);
+          this.showSuccess('Repositório adicionado com sucesso');
+          this.resetForm();
+        },
+        error: (error: Error) => {
+          this.showError(`Erro ao buscar repositório: ${error.message}`);
+        },
+      });
   }
 
   removeRepository(id: string): void {
     this.searchService.removeRepository(id);
+  }
+
+  private resetForm(): void {
+    this.searchForm.reset();
   }
 
   private showSuccess(message: string) {

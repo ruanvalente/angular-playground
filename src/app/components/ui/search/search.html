@@ -3,9 +3,9 @@
 
   <h1 class="title">Explore seus repositórios no Github</h1>
 
-  <form class="form" (ngSubmit)="searchRepository()" novalidate>
+  <form class="form" [formGroup]="searchForm" (ngSubmit)="searchRepository()" novalidate>
     <input
-      [formControl]="searchControl"
+      formControlName="search"
       type="text"
       name="search"
       id="search"
