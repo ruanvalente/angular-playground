@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface Issue {
   id: string;
@@ -25,42 +26,32 @@ export interface IssuesResponse {
   providedIn: 'root',
 })
 export class IssuesService {
-  getIssues(owner: string, repo: string, page = 1, perPage = 10): Observable<IssuesResponse> {
-    const items: Issue[] = Array.from({ length: perPage }, (_, i) => ({
-      id: crypto.randomUUID(),
-      number: (page - 1) * perPage + i + 1,
-      title: `Issue ${(page - 1) * perPage + i + 1}`,
-      body: `Description for issue ${(page - 1) * perPage + i + 1}`,
-      html_url: `https://github.com/${owner}/${repo}/issues/${(page - 1) * perPage + i + 1}`,
-      created_at: new Date().toISOString(),
-      user: {
-        login: 'user',
-        avatar_url: 'https://github.com/github.png',
-      },
-      state: 'open',
-    }));
+  private readonly baseUrl = environment.github.baseUrl;
+  private readonly http = inject(HttpClient);
 
-    return of({
-      items,
-      total_count: 100,
-    }).pipe(delay(700));
+  getIssues(owner: string, repo: string, page = 1, perPage = 10): Observable<IssuesResponse> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('per_page', perPage.toString())
+      .set('state', 'all');
+
+    return this.http.get<Issue[]>(`${this.baseUrl}/repos/${owner}/${repo}/issues`, { params }).pipe(
+      map((issues) => ({
+        items: issues.map((issue) => ({
+          ...issue,
+          id: issue.id.toString(),
+        })),
+        total_count: issues.length,
+      }))
+    );
   }
 
   getIssue(owner: string, repo: string, number: number): Observable<Issue> {
-    const issue: Issue = {
-      id: crypto.randomUUID(),
-      number,
-      title: `Issue ${number}`,
-      body: `# Issue ${number}\n\nThis is a detailed description of issue ${number} with markdown support.\n\n## Features\n- Point 1\n- Point 2\n\n## Code Example\n\`\`\`typescript\nconsole.log("Hello from issue ${number}");\n\`\`\``,
-      html_url: `https://github.com/${owner}/${repo}/issues/${number}`,
-      created_at: new Date().toISOString(),
-      user: {
-        login: 'user',
-        avatar_url: 'https://github.com/github.png',
-      },
-      state: 'open',
-    };
-
-    return of(issue).pipe(delay(700));
+    return this.http.get<Issue>(`${this.baseUrl}/repos/${owner}/${repo}/issues/${number}`).pipe(
+      map((issue) => ({
+        ...issue,
+        id: issue.id.toString(),
+      }))
+    );
   }
 }
