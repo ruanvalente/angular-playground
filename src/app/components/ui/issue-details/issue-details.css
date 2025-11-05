@@ -64,6 +64,8 @@
   border: 1px solid #e1e4e8;
   margin: 1rem 0;
   white-space: pre-wrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .issue-actions {

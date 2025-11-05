@@ -1,9 +1,8 @@
 .title {
   max-width: 433px;
-
-  font-size: 48px;
+  font-size: 3rem;
   color: #3a3a3a;
-  line-height: 56px;
+  line-height: 3.5rem;
   margin-top: 40px;
 }
 
@@ -71,4 +70,36 @@ button:disabled {
 
 .animation-left {
   animation: fade-left 0.6s forwards;
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  .title {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .form input {
+    padding: 1rem 0;
+    width: 100%;
+  }
+
+  .form button {
+    max-width: 100%;
+    width: 100%;
+    margin-top: 10px;
+    height: 3rem;
+  }
+
+  .form input::placeholder {
+    font-size: 0.625rem;
+    padding: 1rem;
+  }
 }
