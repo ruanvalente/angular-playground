@@ -65,3 +65,9 @@
 .repository-card {
   animation: fadeIn 0.3s ease-out forwards;
 }
+
+@media (max-width: 600px) {
+  .repositories-list {
+    grid-template-columns: 1fr;
+  }
+}
