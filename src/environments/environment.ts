@@ -3,4 +3,7 @@ export const environment = {
   github: {
     baseUrl: 'https://api.github.com',
   },
+  app: {
+    baseURL: 'angular-playground-roan.vercel.app',
+  },
 };

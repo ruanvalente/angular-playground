@@ -1,14 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 
 import { Repository, SearchService } from '../../../services/search.service';
+import { SeoService } from '../../../services/seo.service';
 import { Header } from '../../shared/header/header';
 import { Loading } from '../../shared/loading/loading';
 import { RepositoriesList } from '../repositories-list/repositories-list';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-search',
@@ -20,6 +21,8 @@ import { RepositoriesList } from '../repositories-list/repositories-list';
 export class Search {
   private readonly searchService = inject(SearchService);
   private readonly route = inject(ActivatedRoute);
+  private readonly seoService = inject(SeoService);
+  private readonly baseUrl = environment.app.baseURL;
 
   readonly loading = signal(false);
   readonly hasError = signal(false);
@@ -41,6 +44,12 @@ export class Search {
       this.searchControl.setValue(repoParam);
       this.searchRepository();
     }
+
+    this.seoService.updateTags({
+      title: 'Buscar Repositórios GitHub',
+      description: 'Busque e gerencie seus repositórios GitHub favoritos.',
+      url: this.baseUrl + this.route.snapshot.url.join('/'),
+    });
   }
 
   searchRepository(): void {

@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Issue, IssuesService } from '../../../services/issues.service';
 import { SearchService } from '../../../services/search.service';
 import { Loading } from '../../shared/loading/loading';
+import { SeoService } from '../../../services/seo.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-repository-details',
@@ -17,6 +19,8 @@ export class RepositoryDetails implements OnInit {
   private router = inject(Router);
   private issuesService = inject(IssuesService);
   private searchService = inject(SearchService);
+  private readonly seoService = inject(SeoService);
+  private readonly baseUrl = environment.app.baseURL;
 
   repository = signal<any>(null);
   issues = signal<Issue[]>([]);
@@ -39,6 +43,12 @@ export class RepositoryDetails implements OnInit {
 
     this.repository.set(repository);
     this.loadIssues();
+
+    this.seoService.updateTags({
+      title: 'Lista de Repositórios | Angular SSR SEO',
+      description: 'Explore os repositórios mais populares e veja detalhes de cada um.',
+      url: `${this.baseUrl}/repository/${owner}/${repo}`,
+    });
   }
 
   loadIssues() {
