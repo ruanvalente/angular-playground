@@ -8,7 +8,19 @@
 
 .repository-header h1 {
   font-size: 2rem;
+}
+
+.repository-header div {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   margin-bottom: 1rem;
+}
+
+.repository-header .owner-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
 }
 
 .repository-stats {

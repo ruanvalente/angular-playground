@@ -1,0 +1,16 @@
+.title {
+  max-width: 433px;
+  font-size: 3rem;
+  color: #3a3a3a;
+  line-height: 3.5rem;
+  margin-top: 40px;
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  .title {
+    font-size: 2rem;
+    text-align: center;
+  }
+}

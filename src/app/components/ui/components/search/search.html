@@ -1,15 +1,11 @@
 <div>
-  <app-header></app-header>
-
-  <h1 class="title">Explore seus repositórios no Github</h1>
-
   <form class="form" [formGroup]="searchForm" (ngSubmit)="searchRepository()" novalidate>
     <input
       formControlName="search"
       type="text"
       name="search"
       id="search"
-      placeholder="Entre com usuário/repositório (ex: angular/angular)"
+      placeholder="Entre com usuário/repositório"
       [class.error-input]="searchControl.touched && searchControl.invalid"
       aria-invalid="{{ searchControl.touched && searchControl.invalid ? 'true' : 'false' }}"
       aria-describedby="search-help"
@@ -25,11 +21,5 @@
   <span id="search-help-format" class="helper"
     >Formato inválido. Use <code>usuario/repositorio</code> (ex: angular/angular).</span
   >
-  } @if (loading()) {
-  <app-loading></app-loading>
-  } @if(hasError()) {
-  <span class="error">Favor entrar com repositório correto</span>
   }
-
-  <app-repositories-list></app-repositories-list>
 </div>

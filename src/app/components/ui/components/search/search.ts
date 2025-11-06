@@ -1,20 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 
-import { Repository, SearchService } from '../../../services/search.service';
-import { SeoService } from '../../../services/seo.service';
-import { Header } from '../../shared/header/header';
-import { Loading } from '../../shared/loading/loading';
-import { RepositoriesList } from '../repositories-list/repositories-list';
-import { environment } from '../../../../environments/environment';
+import { Repository, SearchService } from '../../../../services/search.service';
+import { SeoService } from '../../../../services/seo.service';
+import { environment } from '../../../../../environments/environment';
+import { SearchStateService } from '../../../../services/search-state.service';
 
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, Header, Loading, RepositoriesList],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './search.html',
   styleUrl: './search.css',
 })
@@ -22,10 +20,9 @@ export class Search {
   private readonly searchService = inject(SearchService);
   private readonly route = inject(ActivatedRoute);
   private readonly seoService = inject(SeoService);
-  private readonly baseUrl = environment.app.baseURL;
+  private readonly state = inject(SearchStateService);
 
-  readonly loading = signal(false);
-  readonly hasError = signal(false);
+  private readonly baseUrl = environment.app.baseURL;
 
   readonly searchControl = new FormControl<string>('', {
     nonNullable: true,
@@ -59,12 +56,12 @@ export class Search {
       return;
     }
 
-    this.loading.set(true);
-    this.hasError.set(false);
+    this.state.loading.set(true);
+    this.state.hasError.set(false);
 
     this.searchService
       .searchRepository(term)
-      .pipe(finalize(() => this.loading.set(false)))
+      .pipe(finalize(() => this.state.loading.set(false)))
       .subscribe({
         next: (repository: Repository | null) => {
           if (!repository) {

@@ -1,0 +1,12 @@
+<section>
+  <app-header></app-header>
+  <h1 class="title">Explore seus repositórios no Github</h1>
+
+  @if (loading()) {
+  <app-loading></app-loading>
+  } @if(hasError()) {
+  <span class="error">Favor entrar com repositório correto</span>
+  }
+  <app-search></app-search>
+  <app-repositories-list></app-repositories-list>
+</section>

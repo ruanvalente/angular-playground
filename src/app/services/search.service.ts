@@ -1,7 +1,7 @@
-import { Injectable, PLATFORM_ID, effect, inject, signal } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map, catchError, of } from 'rxjs';
+import { Injectable, PLATFORM_ID, effect, inject, signal } from '@angular/core';
+import { Observable, catchError, map, of } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { ToastService, ToastType } from './toast.service';
 
@@ -62,7 +62,7 @@ export class SearchService {
         ...response,
         id: response.id.toString(),
       })),
-      catchError((error) => {
+      catchError(() => {
         this.toastService.show(
           `Repositório "${owner}/${repo}" não encontrado. Verifique se o nome está correto.`,
           ToastType.ERROR
