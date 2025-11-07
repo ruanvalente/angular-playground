@@ -1,8 +1,10 @@
 <div class="repository-details">
   <a (click)="goBackToHome()" class="back-button">&larr; Back to repositories</a>
+
   @if (loading()) {
   <app-loading></app-loading>
   } @else {
+
   <header class="repository-header">
     <div>
       <img class="owner-avatar" [src]="repository()?.owner.avatar_url" alt="Owner Avatar" />
@@ -35,11 +37,23 @@
       }
     </div>
 
-    @if(issues.length > 0) {
-    <div class="pagination">
-      <button [disabled]="currentPage() === 1" (click)="previousPage()">Previous</button>
-      <span>Page {{ currentPage() }}</span>
-      <button [disabled]="!hasNextPage()" (click)="nextPage()">Next</button>
+    <div class="per-page-selector">
+      <label for="per-page">View up to</label>
+      <select id="per-page" (change)="changePerPage($event)">
+        @for(option of perPageOptions; track option) {
+        <option [value]="option" [selected]="option === perPage">{{ option }}</option>
+        }
+      </select>
+      <span for="per-page">per page</span>
+    </div>
+
+    @if(issues().length > 0) {
+    <div class="pagination-container">
+      <div class="pagination">
+        <button [disabled]="currentPage() === 1" (click)="previousPage()">Previous</button>
+        <span>Page {{ currentPage() }} of {{ repository()?.open_issues_count || 0 }}</span>
+        <button [disabled]="!hasNextPage()" (click)="nextPage()">Next</button>
+      </div>
     </div>
     }
   </section>
