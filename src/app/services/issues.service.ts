@@ -29,21 +29,30 @@ export class IssuesService {
   private readonly baseUrl = environment.github.baseUrl;
   private readonly http = inject(HttpClient);
 
-  getIssues(owner: string, repo: string, page = 1, perPage = 10): Observable<IssuesResponse> {
-    const params = new HttpParams()
-      .set('page', page.toString())
-      .set('per_page', perPage.toString())
-      .set('state', 'all');
+  getIssues(
+    owner: string,
+    repo: string,
+    page: number,
+    perPage: number
+  ): Observable<IssuesResponse> {
+    const params = new HttpParams().set('state', 'open').set('page', page).set('per_page', perPage);
 
-    return this.http.get<Issue[]>(`${this.baseUrl}/repos/${owner}/${repo}/issues`, { params }).pipe(
-      map((issues) => ({
-        items: issues.map((issue) => ({
-          ...issue,
-          id: issue.id.toString(),
-        })),
-        total_count: issues.length,
-      }))
-    );
+    return this.http
+      .get<Issue[]>(`${this.baseUrl}/repos/${owner}/${repo}/issues`, {
+        params,
+        observe: 'response',
+      })
+      .pipe(
+        map((response) => {
+          const linkHeader = response.headers.get('Link');
+          const hasNext = linkHeader?.includes('rel="next"') ?? false;
+
+          return {
+            items: response.body ?? [],
+            total_count: hasNext ? (page + 1) * perPage : page * perPage,
+          };
+        })
+      );
   }
 
   getIssue(owner: string, repo: string, number: number): Observable<Issue> {
