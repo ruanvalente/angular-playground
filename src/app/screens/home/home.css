@@ -4,12 +4,8 @@
   color: #3a3a3a;
   line-height: 3.5rem;
   margin-top: 40px;
-}
 
-/* Mobile */
-
-@media (max-width: 600px) {
-  .title {
+  @media (max-width: 600px) {
     font-size: 2rem;
     text-align: center;
   }

@@ -27,7 +27,8 @@ export class RepositoryDetails implements OnInit {
   loading = signal(true);
   currentPage = signal(1);
   totalIssues = signal(0);
-  readonly perPage = 10;
+  perPage = 10;
+  perPageOptions = [5, 10, 20, 50];
 
   ngOnInit() {
     const { owner, repo } = this.route.snapshot.params;
@@ -88,6 +89,13 @@ export class RepositoryDetails implements OnInit {
       this.currentPage.update((page) => page - 1);
       this.loadIssues();
     }
+  }
+
+  changePerPage(event: Event) {
+    const select = event.target as HTMLSelectElement;
+    this.perPage = Number(select.value);
+    this.currentPage.set(1);
+    this.loadIssues();
   }
 
   goBackToHome() {

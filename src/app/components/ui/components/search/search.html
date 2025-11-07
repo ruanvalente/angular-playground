@@ -1,6 +1,7 @@
 <div>
   <form class="form" [formGroup]="searchForm" (ngSubmit)="searchRepository()" novalidate>
     <input
+      class="form__input-search"
       formControlName="search"
       type="text"
       name="search"
@@ -10,15 +11,17 @@
       aria-invalid="{{ searchControl.touched && searchControl.invalid ? 'true' : 'false' }}"
       aria-describedby="search-help"
     />
-    <button type="submit" [disabled]="searchControl.invalid">Pesquisar</button>
+    <button class="form__input-search--button" type="submit" [disabled]="searchControl.invalid">
+      Pesquisar
+    </button>
   </form>
 
   @if (searchControl.touched && searchControl.hasError('required')) {
-  <span id="search-help-empty" class="helper"
+  <span id="search-help-empty" class="form__helper-message"
     >Por favor, entre com usuário/repositório (ex: angular/angular).</span
   >
   } @if (searchControl.touched && searchControl.hasError('pattern')) {
-  <span id="search-help-format" class="helper"
+  <span id="search-help-format" class="form__helper-message"
     >Formato inválido. Use <code>usuario/repositorio</code> (ex: angular/angular).</span
   >
   }

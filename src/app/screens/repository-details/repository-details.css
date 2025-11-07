@@ -1,114 +1,146 @@
 .repository-details {
   padding: 2rem;
-}
 
-.repository-header {
-  margin-bottom: 2rem;
-}
+  .back-button {
+    display: inline-block;
+    margin-bottom: 1rem;
+    color: #0366d6;
+    cursor: pointer;
+  }
 
-.repository-header h1 {
-  font-size: 2rem;
-}
+  .back-button:hover {
+    text-decoration: underline;
+  }
 
-.repository-header div {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
+  .repository-header {
+    margin-bottom: 2rem;
 
-.repository-header .owner-avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-}
+    div {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
 
-.repository-stats {
-  display: flex;
-  gap: 1rem;
-}
+    .owner-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+    }
 
-.stat {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
+    h1 {
+      font-size: 2rem;
+    }
+  }
 
-.issues-section {
-  margin-top: 2rem;
-}
+  .repository-stats {
+    display: flex;
+    gap: 1rem;
 
-.issues-list {
-  display: grid;
-  gap: 1rem;
-  margin: 1rem 0;
-}
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  }
 
-.issue-card {
-  background-color: #f6f8fa;
-  padding: 1rem;
-  border: 1px solid #e1e4e8;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
+  .issues-section {
+    margin-top: 2rem;
 
-.issues-list:hover .issue-card {
-  opacity: 0.6;
-  transform: scale(0.98);
-}
+    .issues-list {
+      display: grid;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
 
-.issue-card:hover {
-  background-color: #f0f0f0;
-  opacity: 1 !important;
-  transform: scale(1.02) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-color: #0366d6;
-  transition: all 0.3s ease;
-}
+    .issue-card {
+      background-color: #f6f8fa;
+      padding: 1rem;
+      border: 1px solid #e1e4e8;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
 
-.issue-number {
-  color: #586069;
-}
+    .issues-list:hover .issue-card {
+      opacity: 0.6;
+      transform: scale(0.98);
+    }
 
-.issue-title {
-  margin: 0.5rem 0;
-  font-size: 1.1rem;
-}
+    .issue-card:hover {
+      background-color: #f0f0f0;
+      opacity: 1;
+      transform: scale(1.02);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border-color: #0366d6;
+      transition: all 0.3s ease;
+    }
 
-.issue-info {
-  color: #586069;
-  font-size: 0.875rem;
-}
+    .issue-number {
+      color: #586069;
+    }
 
-.pagination {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  justify-content: center;
-  margin-top: 2rem;
-}
+    .issue-title {
+      margin: 0.5rem 0;
+      font-size: 1.1rem;
+    }
 
-.pagination button {
-  padding: 0.5rem 1rem;
-  border: 1px solid #e1e4e8;
-  border-radius: 6px;
-  background: white;
-  cursor: pointer;
-}
+    .issue-info {
+      color: #586069;
+      font-size: 0.875rem;
+    }
 
-.pagination button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
+    .per-page-selector {
+      display: flex;
+      align-items: center;
+      justify-content: end;
+      gap: 1rem;
+      margin-top: 1rem;
 
-.back-button {
-  display: inline-block;
-  margin-bottom: 1rem;
-  color: #0366d6;
-  cursor: pointer;
-}
+      label,
+      span {
+        font-weight: 500;
+      }
 
-.back-button:hover {
-  text-decoration: underline;
+      select {
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        border: 1px solid #e1e4e8;
+        cursor: pointer;
+      }
+
+      @media (max-width: 600px) {
+        justify-content: center;
+      }
+    }
+
+    .pagination-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 2rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+
+      .pagination {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        justify-content: center;
+
+        button {
+          padding: 0.5rem 1rem;
+          border: 1px solid #e1e4e8;
+          border-radius: 6px;
+          background: white;
+          cursor: pointer;
+
+          &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+          }
+        }
+      }
+    }
+  }
 }
