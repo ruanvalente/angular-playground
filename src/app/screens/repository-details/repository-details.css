@@ -3,7 +3,9 @@
 
   .back-button {
     display: inline-block;
+
     margin-bottom: 1rem;
+
     color: #0366d6;
     cursor: pointer;
   }
@@ -19,12 +21,14 @@
       display: flex;
       align-items: center;
       gap: 1rem;
+
       margin-bottom: 1rem;
     }
 
     .owner-avatar {
       width: 50px;
       height: 50px;
+
       border-radius: 50%;
     }
 
@@ -50,44 +54,51 @@
     .issues-list {
       display: grid;
       gap: 1rem;
+
       margin: 1rem 0;
     }
 
     .issue-card {
-      background-color: #f6f8fa;
+      overflow: hidden;
       padding: 1rem;
-      border: 1px solid #e1e4e8;
+
+      background-color: #f6f8fa;
+
+      text-overflow: ellipsis;
+
       border-radius: 6px;
+      border: 1px solid #e1e4e8;
+
       cursor: pointer;
+
       transition: all 0.3s ease;
-    }
 
-    .issues-list:hover .issue-card {
-      opacity: 0.6;
-      transform: scale(0.98);
-    }
+      &:hover {
+        opacity: 0.98;
 
-    .issue-card:hover {
-      background-color: #f0f0f0;
-      opacity: 1;
-      transform: scale(1.02);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      border-color: #0366d6;
-      transition: all 0.3s ease;
-    }
+        background-color: #f0f0f0;
+        border-color: #0366d6;
 
-    .issue-number {
-      color: #586069;
-    }
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
-    .issue-title {
-      margin: 0.5rem 0;
-      font-size: 1.1rem;
-    }
+        transform: scale(1.02);
+        transition: all 0.3s ease;
+      }
 
-    .issue-info {
-      color: #586069;
-      font-size: 0.875rem;
+      .issue-number {
+        color: #586069;
+      }
+
+      .issue-title {
+        margin: 0.5rem 0;
+
+        font-size: 1.1rem;
+      }
+
+      .issue-info {
+        color: #586069;
+        font-size: 0.875rem;
+      }
     }
 
     .per-page-selector {
@@ -95,6 +106,7 @@
       align-items: center;
       justify-content: end;
       gap: 1rem;
+
       margin-top: 1rem;
 
       label,
@@ -104,8 +116,10 @@
 
       select {
         padding: 0.5rem 1rem;
+
         border-radius: 6px;
         border: 1px solid #e1e4e8;
+
         cursor: pointer;
       }
 
@@ -118,9 +132,10 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-top: 2rem;
-      gap: 1rem;
       flex-wrap: wrap;
+      gap: 1rem;
+
+      margin-top: 2rem;
 
       .pagination {
         display: flex;
@@ -130,8 +145,10 @@
 
         button {
           padding: 0.5rem 1rem;
+
           border: 1px solid #e1e4e8;
           border-radius: 6px;
+
           background: white;
           cursor: pointer;
 

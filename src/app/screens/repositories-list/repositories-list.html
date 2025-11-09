@@ -1,7 +1,10 @@
 <div class="repositories-list">
   @for (repo of repositories(); track repo.id) {
   <div class="repository-card" (click)="navigateToDetails(repo)">
-    <h3 class="repository-name">{{ repo?.name }}</h3>
+    <h3 class="repository-name">
+      <img [src]="repo?.owner?.avatar_url" alt="Owner Avatar" class="owner-avatar" />
+      {{ repo?.name }}
+    </h3>
     <p class="repository-description">{{ repo?.description }}</p>
     <div class="repository-stats">
       <span class="stat">

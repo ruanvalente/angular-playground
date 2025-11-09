@@ -4,10 +4,12 @@
   } @else if (issue()) {
   <header class="issue-header">
     <a (click)="goBack()" class="back-button">&larr; Back to issues</a>
-    <h1>
-      <span class="issue-number">#{{ issue()?.number }}</span>
-      {{ issue()?.title }}
-    </h1>
+    <div>
+      <h1 class="issue-title">
+        <span class="issue-number">#{{ issue()?.number }}</span>
+        {{ issue()?.title }}
+      </h1>
+    </div>
     <div class="issue-meta">
       <img [src]="issue()?.user?.avatar_url" alt="User avatar" class="avatar" />
       <span>Opened by {{ issue()?.user?.login }}</span>
