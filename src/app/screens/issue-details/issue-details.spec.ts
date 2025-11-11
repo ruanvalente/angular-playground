@@ -1,4 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
@@ -6,7 +7,6 @@ import { IssuesService } from '../../services/issues.service';
 import { SeoService } from '../../services/seo.service';
 import { Loading } from '../../shared/loading/loading';
 import { IssueDetails } from './issue-details';
-import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('IssueDetails Screen', () => {
   let fixture: ComponentFixture<IssueDetails>;
