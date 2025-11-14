@@ -5,7 +5,7 @@ import { Repository, SearchService } from '../../services/search.service';
 import { RepositoriesList } from './repositories-list';
 import { provideZonelessChangeDetection, signal, WritableSignal } from '@angular/core';
 
-describe('RepositoriesList', () => {
+describe('RepositoriesList Screen', () => {
   let component: RepositoriesList;
   let fixture: ComponentFixture<RepositoriesList>;
   let mockRouter: jasmine.SpyObj<Router>;
