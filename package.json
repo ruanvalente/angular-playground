@@ -5,9 +5,11 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "serve:ssr:angular-playground": "node dist/angular-playground/server/server.mjs"
+    "build:ssr": "ng build --configuration production --progress=false",
+    "serve:ssr": "node dist/angular-playground/server/server.mjs",
+    "build:client-and-server:dev": "ng build --configuration development --watch",
+    "watch-server": "nodemon --watch \"dist/angular-playground/server\" --ext js,mjs,json --exec \"node dist/angular-playground/server/server.mjs\"",
+    "test": "ng test"
   },
   "prettier": {
     "printWidth": 100,
