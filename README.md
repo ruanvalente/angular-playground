@@ -1,59 +1,43 @@
-# AngularPlayground
+# angular-playground
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.7.
+Angular 20 standalone + Angular Universal (SSR) + Express + Docker + Nginx
 
-## Development server
+## Scripts
 
-To start a local development server, run:
+- `npm run build:ssr` — build production (generates `dist/angular-playground/browser` and `dist/angular-playground/server`)
+- `npm run serve:ssr` — run server from bundle (node)
+- `npm run dev:ssr` — dev mode: build watch + nodemon to reload server
+- `npm run test` — run Karma tests
 
-```bash
-ng serve
-```
+## Dev (local)
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+1. Install deps:
+   npm ci
+2. Install nodemon for watching:
+   npm i -D nodemon
+3. Run dev with live reload:
+   npm run dev:ssr
+   Open http://localhost:4000
 
-## Code scaffolding
+## Docker (production)
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Build and run:
+docker build -t angular-playground:prod .
+docker run -p 4000:4000 angular-playground:prod
 
-```bash
-ng generate component component-name
-```
+## Docker Compose (dev)
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+docker-compose up
 
-```bash
-ng generate --help
-```
+## Docker Compose (prod)
 
-## Building
+docker-compose -f docker-compose.prod.yml up --build -d
+Open http://localhost
 
-To build the project run:
+## Nginx
 
-```bash
-ng build
-```
+Nginx serves static browser files and proxies dynamic requests to Node SSR on port 4000.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## GitHub Actions
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Pushes trigger tests, build and deploy. Configure Vercel secrets if needed.
