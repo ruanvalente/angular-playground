@@ -49,6 +49,7 @@ export class RepositoryDetails implements OnInit {
       title: 'Lista de Repositórios | Angular SSR SEO',
       description: 'Explore os repositórios mais populares e veja detalhes de cada um.',
       url: `${this.baseUrl}/repository/${owner}/${repo}`,
+      image: repository.owner.avatar_url || '',
     });
   }
 
