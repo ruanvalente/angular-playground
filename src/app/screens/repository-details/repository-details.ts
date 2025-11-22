@@ -1,11 +1,11 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Loading } from '../../shared/loading/loading';
+import { environment } from '../../../environments/environment';
 import { Issue, IssuesService } from '../../services/issues.service';
 import { SearchService } from '../../services/search.service';
 import { SeoService } from '../../services/seo.service';
-import { environment } from '../../../environments/environment';
+import { Loading } from '../../shared/loading/loading';
 
 @Component({
   selector: 'app-repository-details',

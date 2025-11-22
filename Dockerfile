@@ -8,8 +8,8 @@ RUN npm ci
 
 COPY . .
 
-# Build browser + server (Angular 20 uses a single ng build for SSR)
-RUN npm run build:ssr
+# Build browser + server (Angular 21 uses a single ng build for SSR)
+RUN npm run build
 
 # ---- Production Stage ----
 FROM node:20-slim AS production
