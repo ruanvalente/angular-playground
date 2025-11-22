@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Repository, SearchService } from '../../services/search.service';
@@ -6,7 +5,6 @@ import { Repository, SearchService } from '../../services/search.service';
 @Component({
   selector: 'app-repositories-list',
   standalone: true,
-  imports: [CommonModule],
   templateUrl: './repositories-list.html',
   styleUrl: './repositories-list.css',
 })

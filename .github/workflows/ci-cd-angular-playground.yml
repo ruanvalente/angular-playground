@@ -67,7 +67,7 @@ jobs:
         run: npm ci
 
       - name: Build (production SSR)
-        run: npm run build:ssr
+        run: npm run build
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
